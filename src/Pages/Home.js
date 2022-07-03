@@ -8,6 +8,7 @@ const Home = () => {
     <Router>
       <AuthContexProvider>
         <Routes>
+          <Route path="/" element={<SignUpPages />} />
           <Route path="/signup" element={<SignUpPages />} />
           <Route path="/login" element={<LoginPage />} />
         </Routes>
