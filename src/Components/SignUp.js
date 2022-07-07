@@ -22,7 +22,7 @@ const SignUp = () => {
     console.log(userName.current.value, userEmail.current.value);
     try {
       console.log("from signup");
-      await signInWithEmailAndPassword(auth, userEmail.current.value, userPass.current.value);
+      await createUserWithEmailAndPassword(auth, userEmail.current.value, userPass.current.value);
     } catch (err) {
       console.log(err.message);
     }
