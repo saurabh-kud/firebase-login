@@ -1,33 +1,32 @@
-import React, { useRef } from "react";
-import { Link } from "react-router-dom";
-import { useUserAuth } from "../Contex/AuthContex";
-
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged,
-} from "firebase/auth";
+import React, { useRef, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const SignUp = () => {
   const userName = useRef();
   const userEmail = useRef();
   const userPass = useRef();
   const userConfirmPass = useRef();
-  const { Signup } = useUserAuth();
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(userName.current.value, userEmail.current.value);
-    try {
-      console.log("from signup");
-      await signInWithEmailAndPassword(auth, userName, userPass);
-    } catch (err) {
-      console.log(err.message);
-    }
+    console.log(userName.current.value);
+    if (!userName.current.value) alert("Please enter name");
+    const res = await createUserWithEmailAndPassword(
+      auth,
+      userEmail.current.value,
+      userPass.current.value
+    );
+    console.log(res);
   };
 
+  // useEffect(() => {
+  //   if (loading) return;
+  //   if (user) navigate("/login");
+  // }, [user, loading]);
   return (
     <div className="container rounded-md  overflow-hidden lg:mx-auto mt-7 lg:w-1/2 lg:border     ">
       <h1 className="text-3xl mt-4 font-semibold  text-orange-400 ">
