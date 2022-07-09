@@ -1,25 +1,45 @@
-import React, { useRef } from "react";
-import { Link } from "react-router-dom";
+import React, { useRef, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useUserAuth } from "../Contex/AuthContex";
 
 const Login = () => {
   const userPass = useRef();
   const userEmail = useRef();
-
-  const handleSubmit = (e) => {
+  const { login, user } = useUserAuth();
+  const [errorShow, setError] = useState("");
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(userEmail.current.value);
-    console.log(userPass.current.value);
-    if (userEmail.current.value && userPass.current.value) {
-    } else {
-      alert("all field mandotory");
+
+    if (!userEmail.current.value || !userPass.current.value) {
+      setError("All Field Required");
+      return;
+    }
+
+    try {
+      const res = await login(userEmail.current.value, userPass.current.value);
+      console.log(res);
+      setError("Sucess🧡🎉");
+      navigate("/home");
+      console.log(user?.email);
+    } catch (error) {
+      setError(error.message);
     }
   };
+  setTimeout(() => {
+    setError("");
+  }, 5000);
 
   return (
     <div className="container rounded-md  border border-slate-400 mx-auto mt-5   lg:w-1/2 w-full ">
       <h1 className="text-3xl mt-3 font-semibold p-4 text-orange-400 ">
         Login
       </h1>
+      {errorShow ? (
+        <h1 className="bg-red-400 text-bold m-4">{errorShow}</h1>
+      ) : (
+        ""
+      )}
       <form className="m-4 container mx-auto lg:w-1/2">
         <h2 className="text-left text-2xl my-2">Email</h2>
         <input
